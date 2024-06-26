@@ -10,7 +10,7 @@ namespace ApiGateway.MongoDb
     public class Juego
     {
         private readonly IMongoCollection<Juego> _collection;
-        
+
         public Juego()
         {
             MongoClient client = new MongoClient("mongodb://localhost:27017");
@@ -39,7 +39,7 @@ namespace ApiGateway.MongoDb
 
         public async Task<List<Juego>> ObtenerJuegos()
         {
-            return await _collection.Find(_=> true).ToListAsync();
+            return await _collection.Find(_ => true).ToListAsync();
         }
 
         public async Task Agregar(Juego juego)
@@ -50,6 +50,13 @@ namespace ApiGateway.MongoDb
         public void Agregar(List<Juego> juegos)
         {
             _collection.InsertMany(juegos);
+        }
+
+        public async Task<Juego> ObtenerPorId(string Id)
+        {
+            return await _collection
+                .Find(a => a.Id == Id)
+                .FirstOrDefaultAsync<Juego>();
         }
 
         public Juego ConsultarPorTitulo(string titulo)
